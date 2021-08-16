@@ -32,7 +32,7 @@ class ClassAutocomplete extends Component {
   debouncedApiCall = debounce((search) => this.fetchApi(search), 300);
 
   onChange = (e) => {
-    const typedValue = e.currentTarget.value;
+    const typedValue = e.target.value;
     if (typedValue) {
       this.debouncedApiCall(typedValue);
       this.setState((prevState) => ({
@@ -58,7 +58,7 @@ class ClassAutocomplete extends Component {
   };
 
   onClick = (e) => {
-    const selectedValue = e.currentTarget.innerText;
+    const selectedValue = e.target.innerText;
 
     this.setState({
       suggestions: [],

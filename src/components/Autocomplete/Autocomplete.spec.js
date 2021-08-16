@@ -1,14 +1,11 @@
 import React from "react";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ClassAutocomplete from "./ClassAutocomplete";
 import fetchUser from "../../services/fetchUser";
 import FunctionalAutocomplete from "./FunctionalAutocomplete";
 
 afterEach(cleanup);
-
-// since I'm using debounce, I set a 500ms timeout to be sure the API was called
-const awaitApi = () => new Promise((t) => setTimeout(t, 500));
 
 describe("<ClassAutocomplete>", () => {
   it("should render the component correctly", () => {
@@ -27,9 +24,7 @@ describe("<ClassAutocomplete>", () => {
       "Otavio"
     );
 
-    await awaitApi();
-
-    expect(screen.getByText("Otavio")).toBeInTheDocument();
+    expect(await screen.findByText("Otavio")).toBeInTheDocument();
   });
 
   it("should render an empty list", async () => {
@@ -40,9 +35,22 @@ describe("<ClassAutocomplete>", () => {
       "Empty"
     );
 
-    await awaitApi();
+    expect(await screen.findByText("No users found")).toBeInTheDocument();
+  });
 
-    expect(screen.getByText("No users found")).toBeInTheDocument();
+  it("should call the onSelect function", async () => {
+    const onSelect = jest.fn();
+
+    render(<ClassAutocomplete fetchFn={fetchUser} onSelect={onSelect} />);
+
+    userEvent.type(
+      screen.getByPlaceholderText(/Type to show suggestions/),
+      "Otavio"
+    );
+
+    fireEvent.click(await screen.findByRole("listitem"));
+
+    expect(onSelect).toHaveBeenCalled();
   });
 });
 
@@ -77,5 +85,20 @@ describe("<FunctionalAutocomplete/>", () => {
     );
 
     expect(await screen.findByText("No users found")).toBeInTheDocument();
+  });
+
+  it("should call the onSelect function", async () => {
+    const onSelect = jest.fn();
+
+    render(<FunctionalAutocomplete fetchFn={fetchUser} onSelect={onSelect} />);
+
+    userEvent.type(
+      screen.getByPlaceholderText(/Type to show suggestions/),
+      "Otavio"
+    );
+
+    fireEvent.click(await screen.findByRole("listitem"));
+
+    expect(onSelect).toHaveBeenCalled();
   });
 });

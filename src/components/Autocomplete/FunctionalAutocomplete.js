@@ -89,7 +89,7 @@ const FunctionalAutocomplete = ({ fetchFn, onSelect, notFound }) => {
 
   const handleChange = useCallback(
     (e) => {
-      const typedValue = e.currentTarget.value;
+      const typedValue = e.target.value;
       if (typedValue) {
         debouncedApiCall(typedValue);
         setUserInput(typedValue);
@@ -107,7 +107,7 @@ const FunctionalAutocomplete = ({ fetchFn, onSelect, notFound }) => {
 
   const handleOnClick = useCallback(
     (e) => {
-      const selectedValue = e.currentTarget.innerText;
+      const selectedValue = e.target.innerText;
 
       setSuggestions([]);
       setShowSuggestions(false);
