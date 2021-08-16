@@ -17,4 +17,4 @@ There is no `prop-types`, since no libs should be used (`prop-types` is not part
 
 This is a pretty simple example of an Autocomplete, if this was to be used in a bigger project, probably the `fetchFn` would return an object and `onSelected` function would receive an object, instead of string.
 
-The tests are pretty basic, but cover
+The tests are pretty basic, but cover most use cases.
